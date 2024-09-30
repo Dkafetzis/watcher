@@ -15,7 +15,7 @@ val quarkusPlatformVersion: String by project
 dependencies {
     implementation(enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}"))
     implementation("com.github.junrar:junrar:7.5.5")
-    implementation("commons-io:commons-io:2.15.0")
+    implementation("commons-io:commons-io:2.16.1")
     implementation("net.lingala.zip4j:zip4j:2.11.5")
     implementation("io.quarkus:quarkus-rest")
     implementation("io.quarkus:quarkus-rest-client-jackson")

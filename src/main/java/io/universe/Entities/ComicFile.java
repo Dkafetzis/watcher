@@ -1,7 +1,6 @@
-package io.universe;
+package io.universe.Entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import io.universe.Entities.FileType;
 import jakarta.persistence.Entity;
 
 
