@@ -27,7 +27,7 @@ public class ScheduledTaskService {
             File[] files = directory.listFiles();
             if (files != null && files.length > 0) {
                 for (File file : files) {
-                    
+                        z
                 }
                 System.out.println("Files detected and FileType entities added.");
             } else {

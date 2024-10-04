@@ -51,7 +51,7 @@ public class Main {
                 Quarkus.asyncExit();
                 return 1;
             }
-
+    
             File watchFile = new File(watchDirectory);
             if (watchFile.exists() && watchFile.isDirectory()) {
                 System.out.println("Using watch directory: " + watchDirectory);
