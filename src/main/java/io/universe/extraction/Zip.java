@@ -1,16 +1,18 @@
 package io.universe.extraction;
 
-import net.lingala.zip4j.ZipFile;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
+import net.lingala.zip4j.ZipFile;
 
 public class Zip {
 
-    private final Logger logger = Logger.getLogger(Zip.class.getName());
+    private static final Logger logger = Logger.getLogger(Zip.class.getName());
     private final String outdir;
     private final String tmpdir;
 
@@ -22,11 +24,11 @@ public class Zip {
     }
 
     public void zipDir(File dir) {
-        logger.info("Zipping directory: " + dir.getName());
+        logger.log(Level.INFO, "Zipping directory: {0}", dir.getName());
         File[] contents = dir.listFiles();
         logger.info("Removing old file if it already exists...");
         if (!new File(outdir + File.separator + dir.getName() + ".cbz").delete()) {
-            logger.info("Failed to delete file " + outdir + File.separator + dir.getName() + ".cbz");
+            logger.log(Level.INFO, "Failed to delete file {0}{1}{2}.cbz", new Object[]{outdir, File.separator, dir.getName()});
         }
         try (ZipFile zippedFile = new ZipFile(outdir + File.separator + dir.getName() + ".cbz")) {
             logger.info("Adding new files...");
@@ -41,7 +43,7 @@ public class Zip {
             logger.info("Directory zipped, deleting " + dir.getName());
             FileUtils.deleteDirectory(dir);
         } catch (IOException e) {
-            logger.warning("Zipping failed, reason: " + e);
+            logger.log(Level.WARNING, "Zipping failed, reason: {0}", e);
         }
     }
 

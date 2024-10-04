@@ -1,11 +1,16 @@
 package io.universe.scheduler;
 
-import io.quarkus.scheduler.Scheduled;
-import jakarta.enterprise.context.ApplicationScoped;
+import java.io.File;
+import java.util.concurrent.CompletableFuture;
+
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
-import java.io.File;
+import io.quarkus.scheduler.Scheduled;
+import io.universe.Entities.ComicFile;
+import io.universe.Entities.FileType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ScheduledTaskService {
@@ -20,21 +25,47 @@ public class ScheduledTaskService {
     @ConfigProperty(name = "watch.directory", defaultValue = "./watch")
     String watchDirectory;
 
-    @Scheduled(every = "10s")
+    @Scheduled(every = "1m")
+    @Transactional
     public void detectFiles() {
         File directory = new File(watchDirectory);
         if (directory.exists() && directory.isDirectory()) {
             File[] files = directory.listFiles();
             if (files != null && files.length > 0) {
                 for (File file : files) {
-                        z
+                    if (file.isFile()) {
+                        CompletableFuture.runAsync(() -> {
+                            FileType fileType;
+                            String fileName = file.getName().toLowerCase();
+                            if (fileName.endsWith(".zip") || fileName.endsWith(".cbz")) {
+                                fileType = FileType.ZIP;
+                            } else if (fileName.endsWith(".rar") || fileName.endsWith(".cbr")) {
+                                fileType = FileType.RAR;
+                            } else {
+                                LOGGER.warn("Unsupported file type: " + fileName);
+                                return;
+                            }
+                            ComicFile comicFile = new ComicFile(file.getPath(), fileType, file.getName());
+                            // Move file to library directory
+                            File destinationFile = new File(libraryDirectory, file.getName());
+                            if (file.renameTo(destinationFile)) {
+                                comicFile.setPath(destinationFile.getPath());
+                                LOGGER.info("Moved file to library: " + destinationFile.getPath());
+                            } else {
+                                LOGGER.error("Failed to move file to library: " + file.getName());
+                                return;
+                            }
+                            comicFile.persist();
+                            LOGGER.info("Created and persisted ComicFile: ");
+                        });
+                    }
                 }
-                System.out.println("Files detected and FileType entities added.");
+                LOGGER.info("Files detected and FileType entities added.");
             } else {
-                System.out.println("No files detected in watch directory.");
+                LOGGER.info("No files detected in watch directory.");
             }
         } else {
-            System.out.println("Watch directory does not exist or is not a directory.");
+            LOGGER.error("Watch directory does not exist or is not a directory.");
         }
     }
 }
