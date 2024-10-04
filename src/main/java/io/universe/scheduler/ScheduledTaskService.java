@@ -9,21 +9,36 @@ import org.jboss.logging.Logger;
 import io.quarkus.scheduler.Scheduled;
 import io.universe.Entities.ComicFile;
 import io.universe.Entities.FileType;
+import io.universe.extraction.ExtractionService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-
+import java.util.List;
 @ApplicationScoped
 public class ScheduledTaskService {
 
     private static final Logger LOGGER = Logger.getLogger(ScheduledTaskService.class);
-    @ConfigProperty(name = "work.directory", defaultValue = "./work")
-    String workDirectory;
 
     @ConfigProperty(name = "library.directory", defaultValue = "./library")
     String libraryDirectory;
 
     @ConfigProperty(name = "watch.directory", defaultValue = "./watch")
     String watchDirectory;
+
+    @Inject
+    ExtractionService extractionService;
+
+    @Scheduled(every = "1m")
+    @Transactional
+    public void convertRarToCbz() {
+        List<ComicFile> allfiles = ComicFile.listAll();
+        List<ComicFile> files = ComicFile.list("fileType", FileType.RAR);
+        for (ComicFile file : files) {
+            CompletableFuture.runAsync(() -> {
+                extractionService.convertRarToCbz(file);
+            });
+        }
+    }
 
     @Scheduled(every = "1m")
     @Transactional
