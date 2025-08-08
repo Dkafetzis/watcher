@@ -2,11 +2,13 @@ package io.universe;
 
 import java.io.File;
 
+import io.universe.services.ScheduledTaskService;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
+import org.jboss.logging.Logger;
 
 /**
  * The Main class serves as the entry point for the Quarkus application.
@@ -23,13 +25,15 @@ public class Main {
 
     public static class MyApp implements QuarkusApplication {
 
-        @ConfigProperty(name = "work.directory", defaultValue = "./work")
+        private static final Logger LOGGER = Logger.getLogger(ScheduledTaskService.class);
+
+        @ConfigProperty(name = "work.directory", defaultValue = "/work")
         String workDirectory;
 
-        @ConfigProperty(name = "library.directory", defaultValue = "./library")
+        @ConfigProperty(name = "library.directory", defaultValue = "/library")
         String libraryDirectory;
 
-        @ConfigProperty(name = "watch.directory", defaultValue = "./watch")
+        @ConfigProperty(name = "watch.directory", defaultValue = "/watch")
         String watchDirectory;
 
         @Override
@@ -38,52 +42,52 @@ public class Main {
             File workFile = new File(workDirectory);
             if (!workFile.exists()) {
                 if (workFile.mkdirs()) {
-                    System.out.println("Created work directory: " + workDirectory);
+                    LOGGER.info("Created work directory: " + workDirectory);
                 } else {
-                    System.out.println("Failed to create work directory: " + workDirectory);
+                    LOGGER.info("Failed to create work directory: " + workDirectory);
                     Quarkus.asyncExit();
                     return 1;
                 }
             } else if (!workFile.isDirectory()) {
-                System.out.println("Work directory path is not a directory: " + workDirectory);
+                LOGGER.info("Work directory path is not a directory: " + workDirectory);
                 Quarkus.asyncExit();
                 return 1;
             } else {
-                System.out.println("Using existing work directory: " + workDirectory);
+                LOGGER.info("Using existing work directory: " + workDirectory);
             }
 
             File libFile = new File(libraryDirectory);
             if (!libFile.exists()) {
                 if (libFile.mkdirs()) {
-                    System.out.println("Created library directory: " + libraryDirectory);
+                    LOGGER.info("Created library directory: " + libraryDirectory);
                 } else {
-                    System.out.println("Failed to create library directory: " + libraryDirectory);
+                    LOGGER.info("Failed to create library directory: " + libraryDirectory);
                     Quarkus.asyncExit();
                     return 1;
                 }
             } else if (!libFile.isDirectory()) {
-                System.out.println("Library directory path is not a directory: " + libraryDirectory);
+                LOGGER.info("Library directory path is not a directory: " + libraryDirectory);
                 Quarkus.asyncExit();
                 return 1;
             } else {
-                System.out.println("Using existing library directory: " + libraryDirectory);
+                LOGGER.info("Using existing library directory: " + libraryDirectory);
             }
 
             File watchFile = new File(watchDirectory);
             if (!watchFile.exists()) {
                 if (watchFile.mkdirs()) {
-                    System.out.println("Created watch directory: " + watchDirectory);
+                    LOGGER.info("Created watch directory: " + watchDirectory);
                 } else {
-                    System.out.println("Failed to create watch directory: " + watchDirectory);
+                    LOGGER.info("Failed to create watch directory: " + watchDirectory);
                     Quarkus.asyncExit();
                     return 1;
                 }
             } else if (!watchFile.isDirectory()) {
-                System.out.println("Watch directory path is not a directory: " + watchDirectory);
+                LOGGER.info("Watch directory path is not a directory: " + watchDirectory);
                 Quarkus.asyncExit();
                 return 1;
             } else {
-                System.out.println("Using existing watch directory: " + watchDirectory);
+                LOGGER.info("Using existing watch directory: " + watchDirectory);
             }
             Quarkus.waitForExit();
             return 0;

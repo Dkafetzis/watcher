@@ -1,0 +1,2 @@
+create table ComicFile (id bigint not null, fileName varchar(255), fileType smallint check (fileType between 0 and 1), path varchar(255), converted boolean not null, primary key (id));
+create sequence ComicFile_SEQ start with 1 increment by 50;

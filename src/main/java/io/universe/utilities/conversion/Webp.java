@@ -1,33 +1,28 @@
-package io.universe.conversion;
+package io.universe.utilities.conversion;
 
+import io.universe.utilities.extraction.Rar;
 import org.apache.commons.io.FilenameUtils;
+import org.jboss.logging.Logger;
 
 import java.io.*;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Webp {
 
-    private final Logger logger = Logger.getLogger(Webp.class.getName());
-    private static int quality;
-    private final Pattern pattern = Pattern.compile("jpe?g|png|jpeg");
-    private static final String CWEBP_BIN_PATH = "." + File.separator + "bin" + File.separator
-            + (System.getProperty("os.name").contains("indows") ? "cwebp.exe" : "cwebp");
+    private static final org.jboss.logging.Logger LOGGER = Logger.getLogger(Webp.class);
 
-    public Webp(int quality) {
-        logger.info("Starting converter.Webp module...");
-        logger.info(System.getProperty("os.name"));
-        Webp.quality = quality;
-    }
+    private static int quality = 80;
 
-    public void convertToWebP(File imageFile, File targetFile) {
+    private static final Pattern pattern = Pattern.compile("jpe?g|png|jpeg");
+
+    private static void convertToWebP(File imageFile, File targetFile) {
         Process process;
         try {
             process = new ProcessBuilder(
-                            CWEBP_BIN_PATH,
+                            "cwebp",
                             "-q",
                             String.valueOf(quality),
                             imageFile.getAbsolutePath(),
@@ -42,10 +37,10 @@ public class Webp {
                 printProcessOutput(process.getErrorStream(), System.err);
             }
             if (!imageFile.delete()) {
-                logger.info("Failed to delete file " + imageFile.getName());
+                LOGGER.info("Failed to delete file " + imageFile.getName());
             }
         } catch (Exception error) {
-            logger.warning("Failed to start process" + error);
+            LOGGER.error("Failed to start process" + error);
         }
     }
 
@@ -59,24 +54,24 @@ public class Webp {
         }
     }
 
-    public void convertDir(File dir) throws IOException {
-        logger.info("Starting conversion of directory: " + dir);
+    public static void convertDir(File dir) {
+        LOGGER.info("Starting conversion of directory: " + dir);
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.isDirectory()) {
                 convertDir(file);
             } else {
                 Matcher matcher = pattern.matcher(FilenameUtils.getExtension(file.getName()));
                 if (matcher.find()) {
-                    logger.info("Converting file: " + file.getName());
+                    LOGGER.info("Converting file: " + file.getName());
                     convertToWebP(
                             file,
                             new File(file.getParent() + File.separator + FilenameUtils.getBaseName(file.getName())
                                     + ".webp"));
                 } else {
-                    logger.info(file.getName() + " Is not an image file, skipping.");
+                    LOGGER.info(file.getName() + " Is not an image file, skipping.");
                 }
             }
         }
-        logger.info("Directory conversion complete.");
+        LOGGER.info("Directory conversion complete.");
     }
 }
