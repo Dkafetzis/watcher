@@ -29,7 +29,7 @@ public class ScheduledTaskService {
 
     @Scheduled(every = "1m", delayed = "4m", concurrentExecution = Scheduled.ConcurrentExecution.SKIP)
     @Transactional
-    public void converRarToCbz() {
+    public void convertRarToCbz() {
         List<ComicFile> files = ComicFile.list("fileType", FileType.RAR);
         for (ComicFile file : files) {
             File oldfile = new File(file.getFullPathAndFileName());
@@ -82,7 +82,7 @@ public class ScheduledTaskService {
                             fileType,
                             file.getName().substring(0, file.getName().lastIndexOf(".")),
                             false);
-                    // Move file to library directory
+                    // Move file to the library directory
                     File destinationFile =
                             new File(libraryDirectory, comicFile.getFileName() + "." + comicFile.getFileExtension());
                     if (file.renameTo(destinationFile)) {
