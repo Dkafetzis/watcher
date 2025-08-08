@@ -2,13 +2,10 @@ package io.universe.utilities.extraction;
 
 import com.github.junrar.Junrar;
 import com.github.junrar.exception.RarException;
-import io.universe.services.ScheduledTaskService;
-import org.apache.commons.io.FilenameUtils;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.jboss.logging.Logger;
-
 import java.io.File;
 import java.io.IOException;
+import org.apache.commons.io.FilenameUtils;
+import org.jboss.logging.Logger;
 
 public class Rar {
 

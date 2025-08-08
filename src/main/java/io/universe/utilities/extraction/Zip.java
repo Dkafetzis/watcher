@@ -2,18 +2,14 @@ package io.universe.utilities.extraction;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-
+import net.lingala.zip4j.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import net.lingala.zip4j.ZipFile;
 import org.jboss.logging.Logger;
 
 public class Zip {
 
     private static final org.jboss.logging.Logger LOGGER = Logger.getLogger(Zip.class);
-    
 
     public static void zipDir(String librarydir, File dir) {
         LOGGER.info("Zipping directory: " + dir.getName());

@@ -1,25 +1,22 @@
 package io.universe.services;
 
-import java.io.File;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
+import io.quarkus.scheduler.Scheduled;
 import io.universe.entities.ComicFile;
 import io.universe.entities.FileType;
 import io.universe.utilities.conversion.Webp;
 import io.universe.utilities.extraction.Rar;
 import io.universe.utilities.extraction.Zip;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import java.io.File;
+import java.util.List;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
-import io.quarkus.scheduler.Scheduled;
-import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class ScheduledTaskService {
 
     private static final Logger LOGGER = Logger.getLogger(ScheduledTaskService.class);
-
 
     @ConfigProperty(name = "library.directory", defaultValue = "./library")
     String libraryDirectory;
@@ -67,7 +64,7 @@ public class ScheduledTaskService {
             File[] files = directory.listFiles();
             if (files != null && files.length > 0) {
                 LOGGER.info("Files detected adding to library.");
-                for (File file : files){
+                for (File file : files) {
                     FileType fileType = null;
                     String fileName = file.getName().toLowerCase();
                     if (fileName.endsWith(".zip") || fileName.endsWith(".cbz")) {
@@ -77,9 +74,14 @@ public class ScheduledTaskService {
                     } else {
                         LOGGER.warn("Unsupported file type: " + fileName);
                     }
-                    ComicFile comicFile = new ComicFile(file.getParent(), fileType, file.getName().substring(0, file.getName().lastIndexOf(".")), false);
+                    ComicFile comicFile = new ComicFile(
+                            file.getParent(),
+                            fileType,
+                            file.getName().substring(0, file.getName().lastIndexOf(".")),
+                            false);
                     // Move file to library directory
-                    File destinationFile = new File(libraryDirectory, comicFile.getFileName() + "." + comicFile.getFileExtension());
+                    File destinationFile =
+                            new File(libraryDirectory, comicFile.getFileName() + "." + comicFile.getFileExtension());
                     if (file.renameTo(destinationFile)) {
                         comicFile.setPath(destinationFile.getParent());
                         LOGGER.info("Moved file to library: " + destinationFile.getPath());

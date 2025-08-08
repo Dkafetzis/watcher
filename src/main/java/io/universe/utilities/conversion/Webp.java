@@ -1,14 +1,12 @@
 package io.universe.utilities.conversion;
 
-import io.universe.utilities.extraction.Rar;
-import org.apache.commons.io.FilenameUtils;
-import org.jboss.logging.Logger;
-
 import java.io.*;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.commons.io.FilenameUtils;
+import org.jboss.logging.Logger;
 
 public class Webp {
 

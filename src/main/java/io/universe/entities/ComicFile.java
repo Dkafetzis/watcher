@@ -1,12 +1,9 @@
 package io.universe.entities;
 
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
-
 import java.io.File;
 import java.util.Objects;
-
 
 @Entity
 public class ComicFile extends PanacheEntity {
@@ -15,9 +12,9 @@ public class ComicFile extends PanacheEntity {
     public FileType fileType;
     public boolean converted;
 
-    public ComicFile(){}
+    public ComicFile() {}
 
-    public ComicFile(String path, FileType fileType, String fileName, boolean converted){
+    public ComicFile(String path, FileType fileType, String fileName, boolean converted) {
         this.path = path;
         this.fileType = fileType;
         this.fileName = fileName;
@@ -56,7 +53,7 @@ public class ComicFile extends PanacheEntity {
         this.converted = converted;
     }
 
-    public String getFileExtension(){
+    public String getFileExtension() {
         return switch (fileType) {
             case ZIP -> "cbz";
             case RAR -> "cbr";
@@ -65,7 +62,7 @@ public class ComicFile extends PanacheEntity {
         };
     }
 
-    public String getFullPathAndFileName(){
+    public String getFullPathAndFileName() {
         return path + File.separator + fileName + "." + getFileExtension();
     }
 
@@ -73,7 +70,10 @@ public class ComicFile extends PanacheEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ComicFile comicFile = (ComicFile) o;
-        return converted == comicFile.converted && Objects.equals(path, comicFile.path) && Objects.equals(fileName, comicFile.fileName) && fileType == comicFile.fileType;
+        return converted == comicFile.converted
+                && Objects.equals(path, comicFile.path)
+                && Objects.equals(fileName, comicFile.fileName)
+                && fileType == comicFile.fileType;
     }
 
     @Override

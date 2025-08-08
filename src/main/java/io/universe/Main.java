@@ -1,13 +1,11 @@
 package io.universe;
 
-import java.io.File;
-
-import io.universe.services.ScheduledTaskService;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.QuarkusApplication;
 import io.quarkus.runtime.annotations.QuarkusMain;
+import io.universe.services.ScheduledTaskService;
+import java.io.File;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.jboss.logging.Logger;
 
 /**
@@ -37,7 +35,7 @@ public class Main {
         String watchDirectory;
 
         @Override
-        public int run(String... args) throws Exception {
+        public int run(String... args) {
 
             File workFile = new File(workDirectory);
             if (!workFile.exists()) {
