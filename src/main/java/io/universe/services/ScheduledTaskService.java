@@ -35,10 +35,13 @@ public class ScheduledTaskService {
             File oldfile = new File(file.getFullPathAndFileName());
             Rar.extractRAR(workDirectory, oldfile);
             Zip.zipDir(libraryDirectory, new File(workDirectory + File.separator + file.getFileName()));
-            oldfile.delete();
-            file.setFileType(FileType.ZIP);
-            file.setPath(libraryDirectory);
-            file.persist();
+            if (oldfile.delete()) {
+                file.setFileType(FileType.ZIP);
+                file.setPath(libraryDirectory);
+                file.persist();
+            } else {
+                LOGGER.warn("Could not delete old RAR file: " + oldfile.getAbsolutePath());
+            }
         }
     }
 
