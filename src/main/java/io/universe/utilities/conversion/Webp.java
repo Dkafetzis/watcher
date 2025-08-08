@@ -12,13 +12,12 @@ public class Webp {
 
     private static final org.jboss.logging.Logger LOGGER = Logger.getLogger(Webp.class);
 
-    private static int quality = 80;
-
     private static final Pattern pattern = Pattern.compile("jpe?g|png|jpeg");
 
     private static void convertToWebP(File imageFile, File targetFile) {
         Process process;
         try {
+            int quality = 80;
             process = new ProcessBuilder(
                             "cwebp",
                             "-q",
