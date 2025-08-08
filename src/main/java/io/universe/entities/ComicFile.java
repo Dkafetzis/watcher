@@ -7,10 +7,10 @@ import java.util.Objects;
 
 @Entity
 public class ComicFile extends PanacheEntity {
-    public String path;
-    public String fileName;
-    public FileType fileType;
-    public boolean converted;
+    private String path;
+    private String fileName;
+    private FileType fileType;
+    private boolean converted;
 
     public ComicFile() {}
 

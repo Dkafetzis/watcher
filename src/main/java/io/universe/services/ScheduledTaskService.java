@@ -92,7 +92,7 @@ public class ScheduledTaskService {
                         LOGGER.error("Failed to move file to library: " + file.getName());
                     }
                     comicFile.persist();
-                    LOGGER.info("Created and persisted ComicFile: " + comicFile.fileName);
+                    LOGGER.info("Created and persisted ComicFile: " + comicFile.getFileName());
                 }
             } else {
                 LOGGER.info("No files detected in watch directory.");
