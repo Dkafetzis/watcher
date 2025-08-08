@@ -1,11 +1,21 @@
 plugins {
     java
     id("io.quarkus")
+    id("com.diffplug.spotless") version "7.2.1"
 }
 
 repositories {
     mavenCentral()
     mavenLocal()
+}
+
+spotless {
+    java {
+        importOrder()
+        removeUnusedImports()
+        palantirJavaFormat()
+        formatAnnotations()
+    }
 }
 
 val quarkusPlatformGroupId: String by project
