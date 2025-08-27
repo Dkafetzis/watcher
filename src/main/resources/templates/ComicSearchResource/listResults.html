@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    {@io.universe.entities.comicvine.ComicVineVolume comicVineVolume}
+    {@java.util.List<io.universe.entities.comicvine.ComicVineVolume> volumeList}
+    {@java.lang.Integer offset}
+    {@java.lang.Integer pageCount}
+    {@java.lang.Integer totalCount}
+    {@java.lang.String query}
+    {@java.lang.Integer limit}
+    {@java.lang.Integer currentPage}
+    {@java.lang.Integer totalPages}
+    {@java.util.List<java.lang.Integer> pageWindow}
+    {@java.lang.Integer lastOffset}
+    {@java.util.List<java.lang.Integer> pageOffsets}
+
+    {#include header /}
+    {#include menuBar/}
+    <body hx-boost="true">
+        <p>Query: {query}</p>
+        <p>Offset: {offset}</p>
+        <p>Page Count: {pageCount}</p>
+        <p>Total Count: {totalCount}</p>
+        <div class="panel-container">
+            {#include pageCounter offset pageCount totalCount query limit currentPage totalPages lastOffset pageWindow pageOffsets /}
+            <h1><i class="fas fa-user icon"></i> Results</h1>
+
+            <div class="table-wrapper">
+                <table class="styled-table">
+                    <thead>
+                    <tr>
+                        <th><label>
+                            <input type="checkbox">
+                        </label></th>
+                        <th>Comic Name</th>
+                        <th>Publisher</th>
+                        <th>Year</th>
+                        <th>Issues</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML">
+                    {#for comicVineVolume in volumeList}
+                    <tr>
+                        <td><label>
+                            <input type="checkbox">
+                        </label></td>
+                        <td><a href="{comicVineVolume.site_detail_url}" target="_blank">{comicVineVolume.name ?: "No name found"}</a></td>
+                        <td>{comicVineVolume.publisher.name ?: "No publisher found"}</td>
+                        <td>{comicVineVolume.start_year ?: "No year found"}</td>
+                        <td>{comicVineVolume.count_of_issues ?: "No number of issues"}</td>
+                        <td><button>Add Comic</button></td>
+                    </tr>
+                    {/for}
+                    </tbody>
+                </table>
+            </div>
+            {#include pageCounter offset pageCount totalCount query limit currentPage totalPages lastOffset pageWindow pageOffsets /}
+        </div>
+    </body>
+</html>

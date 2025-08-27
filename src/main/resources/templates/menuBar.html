@@ -1,0 +1,46 @@
+<div class="menuBar">
+    <a href="/">Home</a>
+    <form action="/api/search" method="get">
+        <label for="query">
+            <input type="text" name="query" id="query" placeholder="query to search">
+        </label>
+        <input type="submit" value="search">
+    </form>
+    <a href="/">This Week</a>
+    <a href="/">Manage</a>
+    <a href="/">StoryArcs</a>
+    <a href="/">Settings</a>
+    <button id="themeToggle" type="button" class="button secondary" aria-pressed="false" title="Toggle theme">Theme: Dark</button>
+    <script>
+        (function() {
+          const KEY = 'theme';
+          const root = document.documentElement; // <html>
+          const btn = document.getElementById('themeToggle');
+
+          function apply(theme) {
+            if (theme === 'light') {
+              root.setAttribute('data-theme', 'light');
+              btn.textContent = 'Theme: Light';
+              btn.setAttribute('aria-pressed', 'true');
+              localStorage.setItem(KEY, 'light');
+            } else {
+              root.removeAttribute('data-theme');
+              btn.textContent = 'Theme: Dark';
+              btn.setAttribute('aria-pressed', 'false');
+              localStorage.setItem(KEY, 'dark');
+            }
+          }
+
+          // Initialize from storage or system preference
+          const stored = localStorage.getItem(KEY);
+          const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+          const initial = stored ? stored : (prefersLight ? 'light' : 'dark');
+          apply(initial);
+
+          btn.addEventListener('click', function() {
+            const next = (root.getAttribute('data-theme') === 'light') ? 'dark' : 'light';
+            apply(next);
+          });
+        })();
+    </script>
+</div>

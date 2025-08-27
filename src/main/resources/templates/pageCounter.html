@@ -1,0 +1,52 @@
+{@java.lang.Integer offset}
+{@java.lang.Integer pageCount}
+{@java.lang.Integer totalCount}
+{@java.lang.String query}
+{@java.lang.Integer limit}
+{@java.lang.Integer currentPage}
+{@java.lang.Integer totalPages}
+{@java.lang.Integer lastOffset}
+{@java.util.List<java.lang.Integer> pageWindow}
+{@java.util.List<java.lang.Integer> pageOffsets}
+
+{#let currentCount=(pageCount + offset)}
+<div class="pagination">
+  {#if totalCount > 0}
+    <div class="pagination-info">
+      Showing {offset.plus(1)} - {#if currentCount < totalCount}{currentCount}{#else}{totalCount}{/if} of {totalCount}
+      — Page {currentPage} of {totalPages}
+    </div>
+  {#else}
+    <div class="pagination-info">No results</div>
+  {/if}
+  <div class="pagination-controls">
+    {#if offset > 0}
+      <a class="button" href="/api/search?query={query}&offset=0">First</a>
+      <a class="button" href="/api/search?query={query}&offset={offset.minus(limit)}">Previous</a>
+    {#else}
+      <span class="button disabled" aria-disabled="true">First</span>
+      <span class="button disabled" aria-disabled="true">Previous</span>
+    {/if}
+
+    {#if totalPages > 1}
+      <span class="page-numbers">
+        {#for p in pageWindow}
+          {#if p.equals(currentPage)}
+            <span class="button active" aria-current="page">{p}</span>
+          {#else}
+            <a class="button" href="/api/search?query={query}&offset={pageOffsets.get(pageWindow.indexOf(p))}">{p}</a>
+          {/if}
+        {/for}
+      </span>
+    {/if}
+
+    {#if currentCount < totalCount}
+      <a class="button" href="/api/search?query={query}&offset={offset.plus(limit)}">Next</a>
+      <a class="button" href="/api/search?query={query}&offset={lastOffset}">Last</a>
+    {#else}
+      <span class="button disabled" aria-disabled="true">Next</span>
+      <span class="button disabled" aria-disabled="true">Last</span>
+    {/if}
+  </div>
+</div>
+{/let}

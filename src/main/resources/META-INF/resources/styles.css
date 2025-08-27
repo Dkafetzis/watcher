@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=TASA+Explorer:wght@400..800&display=swap');
+
+/*
+  Dark Cyber Theme
+  - Only CSS changes; no HTML edits required
+  - Targets existing classes/elements used in templates
+*/
+
+:root {
+  /* Core palette */
+  --bg-0: #0b0f19; /* deep space */
+  --bg-1: #0f1629; /* panel/base */
+  --bg-2: #121b36; /* elevated */
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --text-0: #e6f1ff;
+  --text-1: #b7c3d7;
+  --muted: #9aa4b2;
+
+  /* Accents */
+  --accent: #00e5ff;  /* neon cyan */
+  --accent-2: #ff00a8; /* neon magenta */
+  --accent-3: #7cff6b; /* neon green */
+
+  /* Effects */
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--line);
+  --glow: 0 0 20px rgba(0, 229, 255, 0.22), 0 0 4px rgba(0, 229, 255, 0.24);
+  --transition-fast: 120ms cubic-bezier(.2,.8,.2,1);
+  --transition-slow: 280ms cubic-bezier(.2,.8,.2,1);
+}
+
+/* Theme: Light overrides */
+:root[data-theme="light"] {
+    /* Core palette for light theme */
+    --bg-0: #f5f8ff; /* page base */
+    --bg-1: #ffffff; /* panels */
+    --bg-2: #eef3ff; /* elevated */
+    --line: rgba(0, 0, 0, 0.08);
+    --line-strong: rgba(0, 0, 0, 0.16);
+    --text-0: #0b1220; /* primary text */
+    --text-1: #2f3b52; /* secondary text */
+    --muted: #6b7484;
+
+    /* Accents remain the same */
+    --accent: #00e5ff;
+    --accent-2: #ff00a8;
+    --accent-3: #26b05b;
+
+    /* Effects tuned for light */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.10), 0 0 0 1px var(--line);
+    --glow: 0 0 16px rgba(0, 229, 255, 0.12), 0 0 3px rgba(0, 229, 255, 0.16);
+}
+
+/* Base and typography */
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text-0);
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255, 0, 168, 0.08), transparent 40%),
+              radial-gradient(800px 400px at 90% 10%, rgba(0, 229, 255, 0.08), transparent 45%),
+              linear-gradient(180deg, var(--bg-0), var(--bg-1) 50%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  /* Animate layered background subtly for a cyber glow feel */
+  background-size: 160% 160%, 200% 200%, 100% 100%;
+  animation: bg-pan 60s linear infinite;
+  font-family: "TASA Explorer", system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+/* Global anchors and focus styles */
+a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast), opacity var(--transition-fast);
+}
+
+a:hover { text-shadow: 0 0 14px rgba(0, 229, 255, 0.45); }
+
+a:active { opacity: 0.85; }
+
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Menu bar */
+.menuBar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14px 20px;
+  background: linear-gradient(180deg, rgba(3, 10, 25, 0.8), rgba(10, 16, 32, 0.8));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.35);
+}
+
+.menuBar a {
+  color: var(--text-0);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 8px 10px;
+  border-radius: var(--radius-xs);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast), color var(--transition-fast);
+}
+
+.menuBar a:hover {
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 0 1px rgba(0, 229, 255, 0.22) inset, 0 0 12px rgba(0, 229, 255, 0.18);
+}
+
+.menuBar form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.menuBar input[type="text"] {
+  color: var(--text-0);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  padding: 8px 12px;
+  min-width: 260px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.menuBar input[type="text"]::placeholder { color: var(--muted); }
+
+.menuBar input[type="text"]:focus {
+  border-color: rgba(0, 229, 255, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.18), inset 0 0 0 1px rgba(0, 229, 255, 0.2);
+}
+
+.menuBar input[type="submit"] {
+  cursor: pointer;
+  color: #041018;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), #6af3ff 60%);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  border-radius: var(--radius-xs);
+  padding: 8px 14px;
+  box-shadow: var(--glow);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+}
+
+.menuBar input[type="submit"]:hover { transform: translateY(-1px); filter: brightness(1.05); }
+.menuBar input[type="submit"]:active { transform: translateY(0); filter: brightness(0.98); }
+
+/* Panels and layout */
+.panel-container {
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  box-shadow: var(--shadow);
+}
+
+.panel-container h1, .panel-container h2, .panel-container h3 {
+  margin: 10px 0 18px;
+  letter-spacing: 0.2px;
+}
+
+.panel-container h1 { font-size: 1.6rem; text-shadow: 0 0 20px rgba(0,229,255,0.15); }
+.panel-container h2 { font-size: 1.25rem; color: var(--text-1); }
+
+.icon { color: var(--accent); margin-right: 8px; }
+
+/* Table styling */
+.table-wrapper {
+  overflow-x: auto;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(255,255,255,0.02));
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.styled-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-align: left;
+  font-weight: 700;
+  color: var(--text-0);
+  background: linear-gradient(180deg, rgba(6, 18, 40, 0.95), rgba(7, 14, 30, 0.95));
+  border-bottom: 1px solid var(--line-strong);
+  padding: 14px 14px;
+}
+
+.styled-table tbody td {
+  padding: 12px 14px;
+  color: var(--text-1);
+  border-bottom: 1px solid var(--line);
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+.styled-table tbody tr:hover {
+  background: rgba(0, 229, 255, 0.06);
+}
+
+/* Buttons */
+.button, button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #041018;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  background: linear-gradient(135deg, var(--accent), #6af3ff 60%);
+  box-shadow: var(--glow);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), filter var(--transition-fast);
+}
+
+.button:hover, button:hover { transform: translateY(-1px); filter: brightness(1.04); }
+.button:active, button:active { transform: translateY(0); filter: brightness(0.98); }
+.button:disabled, button:disabled { cursor: not-allowed; opacity: 0.6; box-shadow: none; }
+
+/* Secondary button variant via data-attr or class if needed */
+.button.secondary, button.secondary {
+  color: var(--text-0);
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border: 1px solid var(--line-strong);
+  box-shadow: none;
+}
+
+/* Links inside table cells should look like links, not buttons */
+.styled-table td a { color: var(--accent); font-weight: 600; }
+.styled-table td a:hover { text-shadow: 0 0 12px rgba(0,229,255,0.4); }
+
+/* Checkboxes */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+  border: 1px solid var(--line-strong);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.3);
+  position: relative;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+input[type="checkbox"]:focus-visible { box-shadow: 0 0 0 3px rgba(0,229,255,0.25), inset 0 0 0 2px rgba(0,0,0,0.3); }
+
+input[type="checkbox"]:checked {
+  border-color: rgba(0,229,255,0.7);
+  background: linear-gradient(135deg, rgba(0,229,255,0.35), rgba(0,229,255,0.15));
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 5px; top: 1px;
+  width: 5px; height: 10px;
+  border: 2px solid #041018;
+  border-top: 0; border-left: 0;
+  transform: rotate(45deg);
+}
+
+/* Pagination inside panel-container (pageCounter links) */
+.panel-container > a:not(.button) {
+  display: inline-block;
+  margin: 14px 8px 6px 0;
+  padding: 8px 12px;
+  color: var(--text-0);
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.panel-container > a:not(.button):hover {
+  border-color: rgba(0,229,255,0.6);
+  box-shadow: 0 0 0 1px rgba(0,229,255,0.25) inset, 0 0 10px rgba(0,229,255,0.18);
+}
+
+/* Utility spacing for paragraphs within content */
+p { color: var(--text-1); margin: 6px 0; }
+
+/* Responsive adjustments */
+@media (max-width: 860px) {
+  .panel-container { margin: 16px 10px; padding: 16px; }
+  .menuBar { gap: 16px; padding: 10px 12px; }
+  .menuBar input[type="text"] { min-width: 180px; flex: 1; }
+  .styled-table thead { font-size: 0.95rem; }
+  .styled-table tbody td { font-size: 0.95rem; }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+
+
+/* Animated background keyframes */
+@keyframes bg-pan {
+  0% {
+    /* Three layers: two radial glows and one linear base gradient */
+    background-position: 0% 0%, 100% 0%, 50% 0%;
+  }
+  50% {
+    /* Slow drift to create a gentle parallax effect */
+    background-position: 100% 60%, 0% 40%, 50% 0%;
+  }
+  100% {
+    background-position: 0% 0%, 100% 0%, 50% 0%;
+  }
+}
+
+
+html[data-theme="light"] body {
+  color: var(--text-0);
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(255, 0, 168, 0.05), transparent 40%),
+              radial-gradient(800px 400px at 90% 10%, rgba(0, 229, 255, 0.05), transparent 45%),
+              linear-gradient(180deg, var(--bg-0), var(--bg-1) 50%, var(--bg-0) 100%);
+  background-attachment: fixed;
+  background-size: 160% 160%, 200% 200%, 100% 100%;
+  animation: bg-pan 60s linear infinite;
+}
+
+/* Components with hardcoded dark backgrounds need light overrides */
+html[data-theme="light"] .menuBar {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.80));
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.10);
+}
+
+html[data-theme="light"] .styled-table thead th {
+  color: var(--text-0);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 255, 0.96));
+  border-bottom: 1px solid var(--line-strong);
+}
+
+html[data-theme="light"] .table-wrapper {
+  background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+
+/* Pagination enhancements */
+.pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 16px 0; }
+.pagination-info { color: var(--text-1); font-size: 0.95rem; }
+.pagination-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.page-numbers { display: inline-flex; gap: 6px; margin: 0 8px; }
+.button.disabled { cursor: not-allowed; opacity: 0.6; box-shadow: none; pointer-events: none; }
+.button.active { background: linear-gradient(135deg, rgba(0,229,255,0.12), rgba(255,0,168,0.12)); border-color: var(--accent); box-shadow: var(--glow); }
