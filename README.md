@@ -9,7 +9,7 @@ If you want to learn more about Quarkus, please visit its website: <https://quar
 You can run your application in dev mode that enables live coding using:
 
 ```shell script
-./gradlew quarkusDev
+./mvnw quarkus:dev
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
@@ -19,49 +19,53 @@ You can run your application in dev mode that enables live coding using:
 The application can be packaged using:
 
 ```shell script
-./gradlew build
+./mvnw package
 ```
 
-It produces the `quarkus-run.jar` file in the `build/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `build/quarkus-app/lib/` directory.
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
 
-The application is now runnable using `java -jar build/quarkus-app/quarkus-run.jar`.
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
 
 If you want to build an _über-jar_, execute the following command:
 
 ```shell script
-./gradlew build -Dquarkus.package.jar.type=uber-jar
+./mvnw package -Dquarkus.package.jar.type=uber-jar
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar build/*-runner.jar`.
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
 
 ## Creating a native executable
 
 You can create a native executable using:
 
 ```shell script
-./gradlew build -Dquarkus.native.enabled=true
+./mvnw package -Dnative
 ```
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
 
 ```shell script
-./gradlew build -Dquarkus.native.enabled=true -Dquarkus.native.container-build=true
+./mvnw package -Dnative -Dquarkus.native.container-build=true
 ```
 
-You can then execute your native executable with: `./build/watcher-0.1.0-SNAPSHOT-runner`
+You can then execute your native executable with: `./target/watcher-0.1.0-runner`
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/gradle-tooling>.
+If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
 
 ## Related Guides
 
 - REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
+- Hibernate ORM ([guide](https://quarkus.io/guides/hibernate-orm)): Define your persistent model with Hibernate ORM and Jakarta Persistence
 - Flyway ([guide](https://quarkus.io/guides/flyway)): Handle your database schema migrations
-- JDBC Driver - H2 ([guide](https://quarkus.io/guides/datasource)): Connect to the H2 database via JDBC
+- Web Dependency Locator ([guide](https://quarkus.io/guides/web-dependency-locator)): Simplify paths and importmap support for Web dependencies
+- Qute Web ([guide](https://quarkiverse.github.io/quarkiverse-docs/quarkus-qute-web/dev/index.html)): Serves Qute templates directly over HTTP.
 - REST Client ([guide](https://quarkus.io/guides/rest-client)): Call REST services
+- REST Qute ([guide](https://quarkus.io/guides/qute-reference#rest_integration)): Qute integration for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
 - REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Quinoa ([guide](https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa/dev/index.html)): Develop, build, and serve your npm-compatible web applications such as React, Angular, Vue, Lit, Svelte, Astro, SolidJS, and others alongside Quarkus.
 - Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
+- Scheduler ([guide](https://quarkus.io/guides/scheduler)): Schedule jobs and tasks
+- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
 
 ## Provided Code
 
@@ -74,12 +78,11 @@ Create your first JPA entity
 [Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
 
 
-### Quinoa
+### Qute Web
 
-Quinoa codestart added a tiny Vite app in src/main/webui. The page is configured to be visible on <a href="/quinoa">/quinoa</a>.
+Qute templates like `some-page.html` served via HTTP automatically by Quarkus from the `src/main/resource/templates/pub` directory. No controllers needed. Once the quarkus app is started visit the generated page at http://localhost:8080/some-page?name=World
 
-[Related guide section...](https://quarkiverse.github.io/quarkiverse-docs/quarkus-quinoa/dev/index.html)
-
+[Related guide section...](https://docs.quarkiverse.io/quarkus-qute-web/dev/index.html)
 
 ### REST Client
 
@@ -92,3 +95,9 @@ Invoke different services through REST with JSON
 Easily start your REST Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+### REST Qute
+
+Create your web page using Quarkus REST and Qute
+
+[Related guide section...](https://quarkus.io/guides/qute#type-safe-templates)
