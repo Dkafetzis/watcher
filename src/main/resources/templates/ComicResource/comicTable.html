@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    {@io.universe.entities.Comic comic}
+    {@java.util.List<io.universe.entities.Comic> comicList}
+
+    {#include header /}
+    {#include menuBar/}
+    <body hx-boost="true">
+    <div class="panel-container">
+        <div class="table-wrapper">
+            <table class="styled-table">
+                <thead>
+                <tr>
+                    <th>Comic Name</th>
+                    <th>Year</th>
+                    <th>Issues</th>
+                </tr>
+                </thead>
+                {#for comic in comicList}
+                <tr>
+                    <td>{comic.getName()}</td>
+                    <td>{comic.getYear()}</td>
+                    <td>{comic.getIssues()}</td>
+                </tr>
+                {/for}
+            </table>
+        </div>
+    </div>
+    </body>
+</html>

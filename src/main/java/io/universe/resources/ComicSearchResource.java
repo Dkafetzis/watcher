@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 
 @ApplicationScoped
-@Path("/api/search")
+@Path("/api")
 public class ComicSearchResource {
 
     @CheckedTemplate
@@ -28,12 +28,7 @@ public class ComicSearchResource {
     ComicVineService comicVineService;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public ComicVineResponse<ComicVineEntity> search(@QueryParam("query") String query) {
-        return comicVineService.search(query);
-    }
-
-    @GET
+    @Path("/search")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Blocking
     public TemplateInstance searchForm(@BeanParam SearchRequest request) {
@@ -41,8 +36,8 @@ public class ComicSearchResource {
         int limit = re.limit > 0 ? re.limit : 100;
         int offset = re.offset;
         int totalCount = re.number_of_total_results;
-        int currentPage = limit > 0 ? (offset / limit) + 1 : 1;
-        int totalPages = limit > 0 ? (totalCount + limit - 1) / limit : 1;
+        int currentPage = offset / limit + 1;
+        int totalPages = (totalCount + limit - 1) / limit;
         java.util.List<java.lang.Integer> pageWindow = new java.util.ArrayList<>();
         int window = 5; // number of pages around current
         int start = Math.max(1, currentPage - window);

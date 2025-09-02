@@ -127,15 +127,4 @@ public class ScheduledTaskService {
             LOGGER.error("Watch directory does not exist or is not a directory.");
         }
     }
-
-    @Scheduled(every = "1m")
-    public void getIssues() {
-        ComicVineResponse<ComicVineIssue> res = comicVineService.getIssues();
-        if (res != null) {
-            LOGGER.infof("ComicVine issues fetch: status=%d error=%s total=%d page=%d limit=%d offset=%d", 
-                    res.status_code, res.error, res.number_of_total_results, res.number_of_page_results, res.limit, res.offset);
-        } else {
-            LOGGER.warn("ComicVine issues fetch returned null response");
-        }
-    }
 }
