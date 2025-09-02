@@ -5,7 +5,7 @@ package io.universe.entities.comicvine;
  * Keeping fields public for simple DTO mapping as per project guidelines.
  */
 public class ComicVineEntity {
-    public String id; // ComicVine IDs are numeric but we use String for flexibility
+    public long id; // ComicVine IDs are numeric but we use String for flexibility
     public String name;
     public String aliases; // Newline-separated list per API docs
     public String api_detail_url;

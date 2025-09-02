@@ -16,10 +16,6 @@
     {#include header /}
     {#include menuBar/}
     <body hx-boost="true">
-        <p>Query: {query}</p>
-        <p>Offset: {offset}</p>
-        <p>Page Count: {pageCount}</p>
-        <p>Total Count: {totalCount}</p>
         <div class="panel-container">
             {#include pageCounter offset pageCount totalCount query limit currentPage totalPages lastOffset pageWindow pageOffsets /}
             <h1><i class="fas fa-user icon"></i> Results</h1>
@@ -38,7 +34,6 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML">
                     {#for comicVineVolume in volumeList}
                     <tr>
                         <td><label>
@@ -48,10 +43,25 @@
                         <td>{comicVineVolume.publisher.name ?: "No publisher found"}</td>
                         <td>{comicVineVolume.start_year ?: "No year found"}</td>
                         <td>{comicVineVolume.count_of_issues ?: "No number of issues"}</td>
-                        <td><button>Add Comic</button></td>
+                        <td>
+                            {#if comic:isAdded(comicVineVolume.id)}
+                                <button disabled>Already added</button>
+                            {#else}
+                                <button hx-target="this"
+                                        hx-swap="outerHTML"
+                                        hx-post="/api/comic?id={comicVineVolume.id}&name={comicVineVolume.name}&year={comicVineVolume.start_year}"
+                                        hx-indicator="#spinner-{comicVineVolume.id}"
+                                        hx-trigger="click once">
+                                    Add Comic
+                                    <img  id="spinner-{comicVineVolume.id}"
+
+                                          class="spinner-indicator"
+                                          src="/spinner.svg"
+                                          alt="Loading..."/>
+                                </button>
+                            {/if}</td>
                     </tr>
                     {/for}
-                    </tbody>
                 </table>
             </div>
             {#include pageCounter offset pageCount totalCount query limit currentPage totalPages lastOffset pageWindow pageOffsets /}
